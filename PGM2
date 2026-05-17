@@ -1,0 +1,116 @@
+//BANK.JAVA
+
+class Bank {
+    private long accountNumber;
+    private String customerName;
+    private String customerAddress;
+    private double balance;
+    private String email;
+    private String phoneNumber;
+
+    // Default constructor
+    public Bank() {
+        accountNumber = 0;
+        customerName = "Not Assigned";
+        customerAddress = "Not Assigned";
+        balance = 500;
+        email = "Not Assigned";
+        phoneNumber = "Not Assigned";
+    }
+
+    // Parameterized constructor
+    public Bank(long accountNumber, String customerName, String customerAddress,
+                double balance, String email, String phoneNumber) {
+        this.accountNumber = accountNumber;
+        this.customerName = customerName;
+        this.customerAddress = customerAddress;
+        this.balance = (balance >= 500) ? balance : 500;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
+
+    // Display method
+    public void display() {
+        System.out.println("Account Number: " + accountNumber);
+        System.out.println("Customer Name: " + customerName);
+        System.out.println("Customer Address: " + customerAddress);
+        System.out.println("Balance: Rs." + balance);
+        System.out.println("Email: " + email);
+        System.out.println("Phone Number: " + phoneNumber);
+    }
+
+    // Deposit method
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            System.out.println("Rs." + amount + " deposited successfully.");
+        } else {
+            System.out.println("Invalid deposit amount.");
+        }
+    }
+
+    // Withdraw method
+    public void withdraw(double amount) {
+        if (amount > 0 && (balance - amount) >= 500) {
+            balance -= amount;
+            System.out.println("Rs." + amount + " withdrawn successfully.");
+        } else {
+            System.out.println("Withdrawal failed! Minimum balance of Rs.500 must be maintained.");
+        }
+    }
+
+    // Get balance method
+    public double getBalance() {
+        return balance;
+    }
+}
+
+
+//MAIN.JAVA
+
+package PGM2;
+
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter Account Number:");
+        long accNo = sc.nextLong();
+        sc.nextLine(); // consume newline
+
+        System.out.println("Enter Customer Name:");
+        String name = sc.nextLine();
+
+        System.out.println("Enter Customer Address:");
+        String address = sc.nextLine();
+
+        System.out.println("Enter Initial Balance:");
+        double balance = sc.nextDouble();
+        sc.nextLine();
+
+        System.out.println("Enter Email:");
+        String email = sc.nextLine();
+
+        System.out.println("Enter Phone Number:");
+        String phone = sc.nextLine();
+
+        Bank b = new Bank(accNo, name, address, balance, email, phone);
+
+        System.out.println("\nCustomer Details:");
+        b.display();
+
+        System.out.println("\nEnter deposit amount:");
+        double depositAmount = sc.nextDouble();
+        b.deposit(depositAmount);
+
+        System.out.println("\nEnter withdrawal amount:");
+        double withdrawAmount = sc.nextDouble();
+        b.withdraw(withdrawAmount);
+
+        System.out.println("\nCurrent Balance: Rs." + b.getBalance());
+
+        sc.close();
+    }
+}
