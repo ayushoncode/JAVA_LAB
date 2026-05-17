@@ -1,0 +1,127 @@
+MissedCallApp/
+│
+├── Caller.java
+├── Telephone.java
+└── Main.java
+
+//Caller.java
+
+class Caller {
+    String number;
+    String name;
+
+    Caller(String number, String name) {
+        this.number = number;
+
+        if (name == null || name.isEmpty()) {
+            this.name = "private caller";
+        } else {
+            this.name = name;
+        }
+    }
+}
+
+
+// Telephone.java
+
+import java.util.*;
+
+class Telephone {
+    LinkedList<Caller> missedCalls = new LinkedList<>();
+
+    void addMissedCall(String number, String name) {
+        if (missedCalls.size() == 3) {
+            Caller removed = missedCalls.removeFirst();
+            System.out.println("Oldest call deleted: " + removed.number);
+        }
+
+        missedCalls.add(new Caller(number, name));
+    }
+
+    void displayCalls() {
+        if (missedCalls.isEmpty()) {
+            System.out.println("No missed calls");
+            return;
+        }
+
+        Iterator<Caller> it = missedCalls.iterator();
+
+        while (it.hasNext()) {
+            Caller c = it.next();
+            System.out.println("Number: " + c.number + " Name: " + c.name);
+        }
+    }
+
+    void deleteCall(String number) {
+        Iterator<Caller> it = missedCalls.iterator();
+
+        while (it.hasNext()) {
+            Caller c = it.next();
+
+            if (c.number.equals(number)) {
+                it.remove();
+                System.out.println("Call deleted");
+                return;
+            }
+        }
+
+        System.out.println("Number not found");
+    }
+}
+
+//Main.java
+
+
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Telephone t = new Telephone();
+
+        int choice = 0;
+
+        while (choice != 4) {
+            System.out.println("\n*** Telephone Menu ***");
+            System.out.println("1. Add Missed Call");
+            System.out.println("2. Display Missed Calls");
+            System.out.println("3. Delete Call");
+            System.out.println("4. Exit");
+            System.out.print("Enter choice: ");
+            choice = sc.nextInt();
+            sc.nextLine();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter Number: ");
+                    String number = sc.nextLine();
+
+                    System.out.print("Enter Name (leave blank if private): ");
+                    String name = sc.nextLine();
+
+                    t.addMissedCall(number, name);
+                    break;
+
+                case 2:
+                    t.displayCalls();
+                    break;
+
+                case 3:
+                    System.out.print("Enter Number to Delete: ");
+                    String del = sc.nextLine();
+
+                    t.deleteCall(del);
+                    break;
+
+                case 4:
+                    System.out.println("Exiting...");
+                    break;
+
+                default:
+                    System.out.println("Invalid Choice");
+            }
+        }
+
+        sc.close();
+    }
+}
