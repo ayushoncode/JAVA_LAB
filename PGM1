@@ -1,0 +1,63 @@
+//COMPLEX.JAVA
+
+public class complex {
+      private double real;
+      private double imaginary;
+
+
+      public complex() {
+          this.real = 0;
+          this.imaginary = 0;
+      }
+    public complex(double real,double imaginary) {
+        this.real = real;
+        this.imaginary = imaginary;
+    }
+    public void display(){
+     if(imaginary>=0){
+         System.out.println(real+"+"+imaginary+"i");
+     }
+     else{
+         System.out.println(real+"-"+(-imaginary)+"i");
+     }
+    }
+
+    public complex multiply(complex c){
+          double newReal=(this.real*c.real)-(this.imaginary*c.imaginary);
+          double newImaginary=(this.real*c.real)+(this.imaginary*c.imaginary);
+          return new complex(newReal,newImaginary);
+    }
+
+
+}
+
+//MAIN.JAVA
+import java.util.*;
+public class Main{
+    static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter real and imaginary part of first complex number: ");
+        double r1 = sc.nextDouble();
+        double i1 = sc.nextDouble();
+
+        System.out.print("Enter real and imaginary part of second complex number: ");
+        double r2 = sc.nextDouble();
+        double i2 = sc.nextDouble();
+
+
+        complex c1 = new complex(r1, i1);
+        complex c2 = new complex(r2, i2);
+
+        System.out.print("First Complex Number: ");
+        c1.display();
+
+        System.out.print("Second Complex Number: ");
+        c2.display();
+
+        complex result = c1.multiply(c2);
+
+        System.out.print("Multiplication Result: ");
+        result.display();
+    }
+}
