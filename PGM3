@@ -1,0 +1,194 @@
+PayrollManagement/
+    Payable.java
+    Employee.java
+    FullTime.java
+    PartTime.java
+    Intern.java
+
+Company/
+    Main.java
+
+
+//PAYABLE.JAVA
+
+package PayrollManagement;
+
+public interface Payable {
+    double calculate();
+}
+
+//EMPLOYEE.JAVA
+
+package PayrollManagement;
+
+public class Employee {
+    protected String name;
+    protected int age;
+    protected double salary;
+    protected String designation;
+
+    public Employee(String name, int age, double salary, String designation) {
+        this.name = name;
+        this.age = age;
+        this.salary = salary;
+        this.designation = designation;
+    }
+
+    public void display() {
+        System.out.println("Name: " + name);
+        System.out.println("Age: " + age);
+        System.out.println("Designation: " + designation);
+    }
+}
+
+//FULLTIME.JAVA
+
+package PayrollManagement;
+
+public class FullTime extends Employee implements Payable {
+
+    public FullTime(String name, int age, double salary, String designation) {
+        super(name, age, salary, designation);
+    }
+
+    public double calculate() {
+        return salary;
+    }
+}
+
+
+//PARTTIME.JAVA
+
+package PayrollManagement;
+
+public class PartTime extends Employee implements Payable {
+    private int hoursWorked;
+
+    public PartTime(String name, int age, double salary, String designation, int hoursWorked) {
+        super(name, age, salary, designation);
+        this.hoursWorked = hoursWorked;
+    }
+
+    public double calculate() {
+        return salary * hoursWorked;
+    }
+}
+
+//INTERN.JAVA
+
+package PayrollManagement;
+
+public class Intern extends Employee implements Payable {
+
+    public Intern(String name, int age, double salary, String designation) {
+        super(name, age, salary, designation);
+    }
+
+    public double calculate() {
+        return salary;
+    }
+}
+
+
+
+
+//MAIN.JAVA
+
+package Company;
+
+import PayrollManagement.*;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        Employee emp[] = new Employee[10];
+        int count = 0;
+        int choice = 0;
+
+        while (choice != 5) {
+            System.out.println("\n*** Payroll System ***");
+            System.out.println("1. Add Full Time Employee");
+            System.out.println("2. Add Part Time Employee");
+            System.out.println("3. Add Intern");
+            System.out.println("4. Display Employees");
+            System.out.println("5. Exit");
+            System.out.print("Enter choice: ");
+            choice = sc.nextInt();
+            sc.nextLine();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter Name: ");
+                    String name1 = sc.nextLine();
+
+                    System.out.print("Enter Age: ");
+                    int age1 = sc.nextInt();
+
+                    System.out.print("Enter Monthly Salary: ");
+                    double salary1 = sc.nextDouble();
+                    sc.nextLine();
+
+                    System.out.print("Enter Designation: ");
+                    String des1 = sc.nextLine();
+
+                    emp[count++] = new FullTime(name1, age1, salary1, des1);
+                    break;
+
+                case 2:
+                    System.out.print("Enter Name: ");
+                    String name2 = sc.nextLine();
+
+                    System.out.print("Enter Age: ");
+                    int age2 = sc.nextInt();
+
+                    System.out.print("Enter Hourly Wage: ");
+                    double wage = sc.nextDouble();
+
+                    System.out.print("Enter Hours Worked: ");
+                    int hours = sc.nextInt();
+                    sc.nextLine();
+
+                    System.out.print("Enter Designation: ");
+                    String des2 = sc.nextLine();
+
+                    emp[count++] = new PartTime(name2, age2, wage, des2, hours);
+                    break;
+
+                case 3:
+                    System.out.print("Enter Name: ");
+                    String name3 = sc.nextLine();
+
+                    System.out.print("Enter Age: ");
+                    int age3 = sc.nextInt();
+
+                    System.out.print("Enter Stipend: ");
+                    double stipend = sc.nextDouble();
+                    sc.nextLine();
+
+                    System.out.print("Enter Designation: ");
+                    String des3 = sc.nextLine();
+
+                    emp[count++] = new Intern(name3, age3, stipend, des3);
+                    break;
+
+                case 4:
+                    for (int i = 0; i < count; i++) {
+                        System.out.println("\nEmployee " + (i + 1));
+                        emp[i].display();
+                        System.out.println("Salary: Rs." + ((Payable) emp[i]).calculate());
+                    }
+                    break;
+
+                case 5:
+                    System.out.println("Exiting...");
+                    break;
+
+                default:
+                    System.out.println("Invalid Choice!");
+            }
+        }
+        sc.close();
+    }
+}
