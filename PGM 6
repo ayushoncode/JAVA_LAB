@@ -1,0 +1,74 @@
+PalindromeChecker/
+│
+├── InvalidInputException.java
+├── ShortStringException.java
+└── Main.java
+
+
+//InvalidInputException.java
+
+
+class InvalidInputException extends Exception {
+    public InvalidInputException(String msg) {
+        super(msg);
+    }
+}
+
+//ShortStringException.java
+
+class ShortStringException extends Exception {
+    public ShortStringException(String msg) {
+        super(msg);
+    }
+}
+
+
+//MAin.java
+
+import java.util.Scanner;
+
+public class Main {
+
+    static void checkPalindrome(String str)
+            throws InvalidInputException, ShortStringException {
+
+        if (str.length() < 3) {
+            throw new ShortStringException("String length must be at least 3");
+        }
+
+        for (int i = 0; i < str.length(); i++) {
+            if (!Character.isLetter(str.charAt(i))) {
+                throw new InvalidInputException(
+                        "String contains non-alphabetical characters");
+            }
+        }
+
+        String original = str.toLowerCase();
+
+        StringBuffer sb = new StringBuffer(original);
+        sb.reverse();
+
+        if (original.equals(sb.toString())) {
+            System.out.println("The string is a palindrome");
+        } else {
+            System.out.println("The string is not a palindrome");
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter a string: ");
+        String str = sc.nextLine();
+
+        try {
+            checkPalindrome(str);
+        } catch (InvalidInputException e) {
+            System.out.println(e.getMessage());
+        } catch (ShortStringException e) {
+            System.out.println(e.getMessage());
+        }
+
+        sc.close();
+    }
+}
