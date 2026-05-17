@@ -1,0 +1,100 @@
+package StudentForm;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+
+class Student {
+    String name, usn, address, category;
+    int age;
+    double cgpa;
+
+    Student(String name, String usn, int age, String address, double cgpa, String category) {
+        this.name = name;
+        this.usn = usn;
+        this.age = age;
+        this.address = address;
+        this.cgpa = cgpa;
+        this.category = category;
+    }
+
+    public String toString() {
+        return name + " " + usn + " " + age + " " + address + " " + cgpa + " " + category;
+    }
+}
+
+public class StudentForm extends JFrame implements ActionListener {
+
+    JTextField t1, t2, t3, t4, t5;
+    JButton b;
+    ArrayList<Student> list = new ArrayList<>();
+
+    StudentForm() {
+        setLayout(new GridLayout(6, 2));
+
+        add(new JLabel("Name"));
+        t1 = new JTextField();
+        add(t1);
+
+        add(new JLabel("USN"));
+        t2 = new JTextField();
+        add(t2);
+
+        add(new JLabel("Age"));
+        t3 = new JTextField();
+        add(t3);
+
+        add(new JLabel("Address"));
+        t4 = new JTextField();
+        add(t4);
+
+        add(new JLabel("CGPA"));
+        t5 = new JTextField();
+        add(t5);
+
+        b = new JButton("Insert");
+        b.addActionListener(this);
+        add(b);
+
+        setSize(300, 300);
+        setVisible(true);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        try {
+            String name = t1.getText();
+            String usn = t2.getText();
+            int age = Integer.parseInt(t3.getText());
+            String address = t4.getText();
+            double cgpa = Double.parseDouble(t5.getText());
+
+            if (name.isEmpty() || usn.isEmpty() || address.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Fields cannot be empty");
+                return;
+            }
+
+            if (cgpa < 0 || cgpa > 10) {
+                JOptionPane.showMessageDialog(this, "Invalid CGPA");
+                return;
+            }
+
+            Student s = new Student(name, usn, age, address, cgpa, "General");
+            list.add(s);
+
+            JOptionPane.showMessageDialog(this, "Inserted");
+
+            for (Student st : list) {
+                System.out.println(st);
+            }
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Invalid Input");
+        }
+    }
+
+    public static void main(String[] args) {
+        new StudentForm();
+    }
+}
