@@ -1,0 +1,132 @@
+QueueProgram/
+└── src/
+    └── QueueManagement/
+        ├── QueueOverflowException.java
+        ├── QueueUnderflowException.java
+        ├── Queue.java
+        └── Main.java
+
+
+//QueueOverflowException.java
+
+class QueueOverflowException extends Exception {
+    public QueueOverflowException(String msg) {
+        super(msg);
+    }
+}
+
+//QueueUnderflowException.java
+
+class QueueUnderflowException extends Exception {
+    public QueueUnderflowException(String msg) {
+        super(msg);
+    }
+}
+
+
+//Queue.java
+
+class Queue {
+    int arr[];
+    int front, rear, size;
+
+    Queue(int size) {
+        this.size = size;
+        arr = new int[size];
+        front = -1;
+        rear = -1;
+    }
+
+    void enqueue(int data) throws QueueOverflowException {
+        if (rear == size - 1) {
+            throw new QueueOverflowException("Queue Overflow");
+        }
+
+        if (front == -1) {
+            front = 0;
+        }
+
+        rear++;
+        arr[rear] = data;
+        System.out.println(data + " inserted");
+    }
+
+    void dequeue() throws QueueUnderflowException {
+        if (front == -1 || front > rear) {
+            throw new QueueUnderflowException("Queue Underflow");
+        }
+
+        System.out.println(arr[front] + " deleted");
+        front++;
+    }
+
+    void display() {
+        if (front == -1 || front > rear) {
+            System.out.println("Queue is Empty");
+            return;
+        }
+
+        System.out.println("Queue Elements:");
+        for (int i = front; i <= rear; i++) {
+            System.out.print(arr[i] + " ");
+        }
+        System.out.println();
+    }
+}
+
+//MAIN.JAVA
+
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter Queue Size: ");
+        int n = sc.nextInt();
+
+        Queue q = new Queue(n);
+        int choice = 0;
+
+        while (choice != 4) {
+            System.out.println("\n*** Queue Operations ***");
+            System.out.println("1. Enqueue");
+            System.out.println("2. Dequeue");
+            System.out.println("3. Display");
+            System.out.println("4. Exit");
+            System.out.print("Enter choice: ");
+            choice = sc.nextInt();
+
+            try {
+                switch (choice) {
+                    case 1:
+                        System.out.print("Enter element: ");
+                        int x = sc.nextInt();
+                        q.enqueue(x);
+                        break;
+
+                    case 2:
+                        q.dequeue();
+                        break;
+
+                    case 3:
+                        q.display();
+                        break;
+
+                    case 4:
+                        System.out.println("Exiting...");
+                        break;
+
+                    default:
+                        System.out.println("Invalid Choice");
+                }
+            } catch (QueueOverflowException e) {
+                System.out.println(e.getMessage());
+            } catch (QueueUnderflowException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        sc.close();
+    }
+}
