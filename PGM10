@@ -1,0 +1,163 @@
+GenericStackApp/
+│
+├── GenericStack.java
+└── Main.java
+
+// GenericStack.java
+
+import java.util.ArrayList;
+
+class GenericStack<T> {
+    ArrayList<T> stack = new ArrayList<>();
+
+    void push(T item) {
+        stack.add(item);
+        System.out.println(item + " pushed");
+    }
+
+    void pop() {
+        if (isEmpty()) {
+            System.out.println("Stack is empty");
+            return;
+        }
+
+        T removed = stack.remove(stack.size() - 1);
+        System.out.println(removed + " popped");
+    }
+
+    void clear() {
+        stack.clear();
+        System.out.println("Stack cleared");
+    }
+
+    boolean isEmpty() {
+        return stack.isEmpty();
+    }
+
+    void display() {
+        if (isEmpty()) {
+            System.out.println("Stack is empty");
+            return;
+        }
+
+        System.out.println("Stack Elements:");
+        for (int i = stack.size() - 1; i >= 0; i--) {
+            System.out.println(stack.get(i));
+        }
+    }
+}
+
+
+//Main.java
+
+
+
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Choose Stack Type:");
+        System.out.println("1. Integer Stack");
+        System.out.println("2. String Stack");
+        int type = sc.nextInt();
+        sc.nextLine();
+
+        int choice = 0;
+
+        if (type == 1) {
+            GenericStack<Integer> stack = new GenericStack<>();
+
+            while (choice != 6) {
+                System.out.println("\n*** Integer Stack Menu ***");
+                System.out.println("1. Push");
+                System.out.println("2. Pop");
+                System.out.println("3. Display");
+                System.out.println("4. Clear");
+                System.out.println("5. Check Empty");
+                System.out.println("6. Exit");
+                System.out.print("Enter choice: ");
+                choice = sc.nextInt();
+
+                switch (choice) {
+                    case 1:
+                        System.out.print("Enter integer: ");
+                        int num = sc.nextInt();
+                        stack.push(num);
+                        break;
+
+                    case 2:
+                        stack.pop();
+                        break;
+
+                    case 3:
+                        stack.display();
+                        break;
+
+                    case 4:
+                        stack.clear();
+                        break;
+
+                    case 5:
+                        System.out.println(stack.isEmpty() ? "Stack is empty" : "Stack is not empty");
+                        break;
+
+                    case 6:
+                        System.out.println("Exiting...");
+                        break;
+                }
+            }
+
+        } else if (type == 2) {
+            GenericStack<String> stack = new GenericStack<>();
+
+            while (choice != 6) {
+                System.out.println("\n*** String Stack Menu ***");
+                System.out.println("1. Push");
+                System.out.println("2. Pop");
+                System.out.println("3. Display");
+                System.out.println("4. Clear");
+                System.out.println("5. Check Empty");
+                System.out.println("6. Exit");
+                System.out.print("Enter choice: ");
+                choice = sc.nextInt();
+                sc.nextLine();
+
+                switch (choice) {
+                    case 1:
+                        System.out.print("Enter string: ");
+                        String str = sc.nextLine();
+                        stack.push(str);
+                        break;
+
+                    case 2:
+                        stack.pop();
+                        break;
+
+                    case 3:
+                        stack.display();
+                        break;
+
+                    case 4:
+                        stack.clear();
+                        break;
+
+                    case 5:
+                        System.out.println(stack.isEmpty() ? "Stack is empty" : "Stack is not empty");
+                        break;
+
+                    case 6:
+                        System.out.println("Exiting...");
+                        break;
+                }
+            }
+
+        } else {
+            System.out.println("Invalid stack type");
+        }
+
+        sc.close();
+    }
+}
+
