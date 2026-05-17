@@ -1,0 +1,110 @@
+StringProject/
+└── src/
+    ├── stringoperations/
+    │   ├── StringManipulator.java
+    │   └── StringProcessor.java
+    │
+    └── application/
+        └── Main.java
+
+// StringManipulator
+
+
+package stringoperations;
+
+public interface StringManipulator {
+    String reverse(String input);
+    String  toUpperCase(String input);
+    String  toLowerCase(String input);
+    String concatenate(String str1, String str2);
+    int countVowels(String input);
+    int wordCount(String input);
+}
+
+
+//StringProcessor
+
+package stringoperations;
+
+public class StringProcessor implements StringManipulator{
+
+	@Override
+	public String reverse(String input) {
+		return new StringBuffer(input).reverse().toString();
+	}
+
+	@Override
+	public String toUpperCase(String input) {
+		return input.toUpperCase();
+	
+	}
+
+	@Override
+	public String toLowerCase(String input) {
+		return input.toLowerCase();
+	}
+
+	@Override
+	public String concatenate(String str1, String str2) {
+		 return str1 + str2;
+	}
+
+	@Override
+	public int countVowels(String input) {
+		int count = 0;
+        input = input.toLowerCase();
+
+        for (int i = 0; i < input.length(); i++) {
+            char ch = input.charAt(i);
+
+            if (ch == 'a' || ch == 'e' || ch == 'i' ||
+                ch == 'o' || ch == 'u') {
+                count++;
+            }
+        }
+        return count;
+	}
+
+	@Override
+	public int wordCount(String input) {
+		if (input.trim().isEmpty()) {
+            return 0;
+        }
+
+        String words[] = input.trim().split("\\s+");
+        return words.length;
+	}
+	
+	
+
+}
+//MAIN.JAVA
+
+package Application;
+
+import stringoperations.*;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        StringProcessor sp = new StringProcessor();
+
+        System.out.print("Enter a string: ");
+        String str = sc.nextLine();
+
+        System.out.println("Reversed String: " + sp.reverse(str));
+        System.out.println("Uppercase: " + sp.toUpperCase(str));
+        System.out.println("Lowercase: " + sp.toLowerCase(str));
+
+        System.out.print("Enter another string for concatenation: ");
+        String str2 = sc.nextLine();
+
+        System.out.println("Concatenated String: " + sp.concatenate(str, str2));
+        System.out.println("Number of vowels: " + sp.countVowels(str));
+        System.out.println("Word Count: " + sp.wordCount(str));
+
+        sc.close();
+    }
+}
