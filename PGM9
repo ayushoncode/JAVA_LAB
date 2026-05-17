@@ -1,0 +1,152 @@
+BookDatabase/
+│
+├── Book.java
+├── BookDatabase.java
+└── Main.java
+
+
+//Book.java
+
+class Book {
+    int id;
+    String title;
+    String author;
+    String publisher;
+    double price;
+
+    Book(int id, String title, String author, String publisher, double price) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.publisher = publisher;
+        this.price = price;
+    }
+
+    void display() {
+        System.out.println(
+            "ID: " + id +
+            " Title: " + title +
+            " Author: " + author +
+            " Publisher: " + publisher +
+            " Price: " + price
+        );
+    }
+}
+BookDatabase.java
+
+import java.util.*;
+
+class BookDatabase {
+    HashMap<Integer, Book> books = new HashMap<>();
+
+    void addBook(Book b) {
+        books.put(b.id, b);
+    }
+
+    void displayAllBooks() {
+        for (Book b : books.values()) {
+            b.display();
+        }
+    }
+
+    List<Book> sortByPrice() {
+        List<Book> sortedList = new ArrayList<>(books.values());
+
+        Collections.sort(sortedList, new Comparator<Book>() {
+            public int compare(Book b1, Book b2) {
+                return Double.compare(b1.price, b2.price);
+            }
+        });
+
+        return sortedList;
+    }
+
+    void searchByAuthor(String authorName) {
+        boolean found = false;
+
+        for (Book b : books.values()) {
+            if (b.author.equalsIgnoreCase(authorName)) {
+                b.display();
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No books found");
+        }
+    }
+
+    List<Book> filterByPrice(double minPrice) {
+        List<Book> filtered = new ArrayList<>();
+
+        for (Book b : books.values()) {
+            if (b.price > minPrice) {
+                filtered.add(b);
+            }
+        }
+
+        return filtered;
+    }
+}
+
+//Main.java
+
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        BookDatabase db = new BookDatabase();
+
+        System.out.print("Enter number of books: ");
+        int n = sc.nextInt();
+        sc.nextLine();
+
+        for (int i = 0; i < n; i++) {
+            System.out.println("\nEnter Book Details:");
+
+            System.out.print("Book ID: ");
+            int id = sc.nextInt();
+            sc.nextLine();
+
+            System.out.print("Title: ");
+            String title = sc.nextLine();
+
+            System.out.print("Author: ");
+            String author = sc.nextLine();
+
+            System.out.print("Publisher: ");
+            String publisher = sc.nextLine();
+
+            System.out.print("Price: ");
+            double price = sc.nextDouble();
+            sc.nextLine();
+
+            db.addBook(new Book(id, title, author, publisher, price));
+        }
+
+        System.out.println("\nBooks Sorted by Price:");
+        List<Book> sorted = db.sortByPrice();
+        for (Book b : sorted) {
+            b.display();
+        }
+
+        System.out.print("\nEnter author name to search: ");
+        String authorSearch = sc.nextLine();
+        db.searchByAuthor(authorSearch);
+
+        System.out.print("\nEnter minimum price: ");
+        double minPrice = sc.nextDouble();
+
+        List<Book> filtered = db.filterByPrice(minPrice);
+
+        System.out.println("\nBooks with price greater than " + minPrice);
+        for (Book b : filtered) {
+            b.display();
+        }
+
+        sc.close();
+    }
+}
+
