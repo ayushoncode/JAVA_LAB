@@ -1,0 +1,95 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.HashMap;
+
+public class ShoppingApp extends JFrame implements ActionListener {
+
+    JTextField customerIdField, itemIdField, qtyField;
+    JButton btn;
+
+    HashMap<Integer, String> customers = new HashMap<>();
+    HashMap<Integer, String> itemNames = new HashMap<>();
+    HashMap<Integer, Double> itemPrices = new HashMap<>();
+
+    ShoppingApp() {
+        // Login validation
+        String user = JOptionPane.showInputDialog("Enter Username");
+        String pass = JOptionPane.showInputDialog("Enter Password");
+
+        if (!user.equals("admin") || !pass.equals("1234")) {
+            JOptionPane.showMessageDialog(this, "Invalid Login");
+            System.exit(0);
+        }
+
+        JOptionPane.showMessageDialog(this, "Login Successful");
+
+        customers.put(101, "Ayush");
+        customers.put(102, "Rahul");
+
+        itemNames.put(1, "Laptop");
+        itemPrices.put(1, 50000.0);
+
+        itemNames.put(2, "Mouse");
+        itemPrices.put(2, 500.0);
+
+        setLayout(new GridLayout(4, 2));
+
+        add(new JLabel("Customer ID"));
+        customerIdField = new JTextField();
+        add(customerIdField);
+
+        add(new JLabel("Item ID"));
+        itemIdField = new JTextField();
+        add(itemIdField);
+
+        add(new JLabel("Quantity"));
+        qtyField = new JTextField();
+        add(qtyField);
+
+        btn = new JButton("Purchase");
+        btn.addActionListener(this);
+        add(btn);
+
+        setSize(300, 200);
+        setVisible(true);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        try {
+            int customerId = Integer.parseInt(customerIdField.getText());
+            int itemId = Integer.parseInt(itemIdField.getText());
+            int qty = Integer.parseInt(qtyField.getText());
+
+            if (!customers.containsKey(customerId)) {
+                int option = JOptionPane.showConfirmDialog(this,
+                        "New Customer. Add?");
+                if (option == JOptionPane.YES_OPTION) {
+                    String name = JOptionPane.showInputDialog("Enter Customer Name");
+                    customers.put(customerId, name);
+                } else {
+                    return;
+                }
+            }
+
+            if (!itemNames.containsKey(itemId)) {
+                JOptionPane.showMessageDialog(this, "Invalid Item ID");
+                return;
+            }
+
+            String itemName = itemNames.get(itemId);
+            double total = itemPrices.get(itemId) * qty;
+
+            JOptionPane.showMessageDialog(this,
+                    "Item: " + itemName + "\nTotal Cost: Rs." + total);
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Invalid Input");
+        }
+    }
+
+    public static void main(String[] args) {
+        new ShoppingApp();
+    }
+}
