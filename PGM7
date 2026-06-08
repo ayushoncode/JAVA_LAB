@@ -1,72 +1,131 @@
 package pass;
-import java.util.*;
+
+public class PasswordOperations {
+
+    public void checkStrength(String pass) {
+        boolean hasUpper = false, hasLower = false, hasDigit = false;
+
+        for (int i = 0; i < pass.length(); i++) {
+            char ch = pass.charAt(i);
+
+            if (Character.isUpperCase(ch))
+                hasUpper = true;
+            else if (Character.isLowerCase(ch))
+                hasLower = true;
+            else if (Character.isDigit(ch))
+                hasDigit = true;
+        }
+
+        if (hasUpper && hasLower && hasDigit)
+            System.out.println("Password is Strong");
+        else
+            System.out.println("Password is Weak");
+    }
+
+    public void countSpecial(String pass) {
+        int count = 0;
+
+        for (int i = 0; i < pass.length(); i++) {
+            if (!Character.isLetterOrDigit(pass.charAt(i)))
+                count++;
+        }
+
+        System.out.println("Special Characters Count: " + count);
+    }
+
+    public void maskPassword(String pass) {
+        String masked = "";
+
+        if (pass.length() < 2)
+            masked = pass;
+        else {
+            masked += pass.charAt(0);
+
+            for (int i = 1; i < pass.length() - 1; i++)
+                masked += "*";
+
+            masked += pass.charAt(pass.length() - 1);
+        }
+
+        System.out.println("Masked Password: " + masked);
+    }
+
+    public void reversePassword(String pass) {
+        StringBuffer sb = new StringBuffer(pass);
+        System.out.println("Reversed Password: " + sb.reverse());
+    }
+
+    public void appendToken(String pass) {
+        System.out.println("Password with Token: " + pass + "@123");
+    }
+
+    public void replaceVowels(String pass) {
+        System.out.println("Password after replacing vowels: "
+                + pass.replaceAll("[aeiouAEIOU]", "#"));
+    }
+}
+
+
+
+//main.java
+
+
+package pass;
+
+import java.util.Scanner;
 
 public class Main {
-	  public static void main(String[] args) {
-     Scanner sc = new Scanner(System.in);
-     System.out.print("Enter Password: ");
-     String pass = sc.nextLine();
-     
-     boolean hasUpper=false;
-     boolean hasLower=false;
-     boolean hasDigit=false;
-     int specialCount=0;
-     
-     for(int i=0;i<pass.length();i++) {
-    	 char ch = pass.charAt(i);
-    	 if(Character.isUpperCase(ch)) {
-    		 hasUpper=true;
-    	 }
-    	 else if(Character.isLowerCase(ch)) {
-    		 hasLower=true;
-    	 }
-    	 else if(Character.isDigit(ch)) {
-    		 hasDigit = true;
-    		 
-    	 }
-    	 else {
-    		 specialCount++;
-    	 }
-    	 
-     }
-     if (hasUpper && hasLower && hasDigit) {
-         System.out.println("Password is strong");
-     } else {
-         System.out.println("Password is weak");
-     }
+    public static void main(String[] args) {
 
-     System.out.println("Special Characters Count: " + specialCount);
-     
-     
-     //MASK PASSWORD
-     
-     String masked="";
-     if(pass.length()<2) {
-    	 masked = pass;
-     }
-     else {
-    	 masked+=pass.charAt(0);
-         for (int i = 1; i < pass.length() - 1; i++) {
-             masked += "*";
-         }
-         masked+=pass.charAt(pass.length()-1);
-    	 
-     }
-     
-     System.out.println("Masked Password: " + masked);
-     
-     StringBuffer sb = new StringBuffer(pass);
-     sb.reverse();
-     System.out.println("Reversed Password: " + sb);
-     
-     
-     String append = pass+"@123";
-     System.out.println("Password with Token: " + append);
-     
-     String replaced = pass.replaceAll("[aeiouAEIOU]", "#");
-     System.out.println("Password after replacing vowels: " + replaced);
+        Scanner sc = new Scanner(System.in);
+        PasswordOperations p = new PasswordOperations();
 
-        
-     
-}
+        System.out.print("Enter Password: ");
+        String pass = sc.nextLine();
+
+        int choice = 0;
+
+        while (choice != 7) {
+
+            System.out.println("\n*** PASSWORD OPERATIONS ***");
+            System.out.println("1. Check Strength");
+            System.out.println("2. Count Special Characters");
+            System.out.println("3. Mask Password");
+            System.out.println("4. Reverse Password");
+            System.out.println("5. Append Token");
+            System.out.println("6. Replace Vowels");
+            System.out.println("7. Exit");
+            System.out.print("Enter Choice: ");
+
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    p.checkStrength(pass);
+                    break;
+                case 2:
+                    p.countSpecial(pass);
+                    break;
+                case 3:
+                    p.maskPassword(pass);
+                    break;
+                case 4:
+                    p.reversePassword(pass);
+                    break;
+                case 5:
+                    p.appendToken(pass);
+                    break;
+                case 6:
+                    p.replaceVowels(pass);
+                    break;
+                case 7:
+                    System.out.println("Exiting...");
+                    break;
+                default:
+                    System.out.println("Invalid Choice!");
+            }
+        }
+
+        sc.close();
+    }
 }
