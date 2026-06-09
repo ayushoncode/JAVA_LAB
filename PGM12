@@ -1,3 +1,5 @@
+package PGM12;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -5,47 +7,61 @@ import java.util.HashMap;
 
 public class ShoppingApp extends JFrame implements ActionListener {
 
-    JTextField customerIdField, itemIdField, qtyField;
+    JTextField t1, t2, t3;
     JButton btn;
 
     HashMap<Integer, String> customers = new HashMap<>();
-    HashMap<Integer, String> itemNames = new HashMap<>();
-    HashMap<Integer, Double> itemPrices = new HashMap<>();
+    HashMap<Integer, String> itemname = new HashMap<>();
+    HashMap<Integer, Double> itemprice = new HashMap<>();
+
+    boolean isNewCustomer;
 
     ShoppingApp() {
-        // Login validation
+
         String user = JOptionPane.showInputDialog("Enter Username");
         String pass = JOptionPane.showInputDialog("Enter Password");
 
-        if (!user.equals("admin") || !pass.equals("1234")) {
+        if (!user.equals("admin") || !pass.equals("123")) {
             JOptionPane.showMessageDialog(this, "Invalid Login");
             System.exit(0);
         }
 
         JOptionPane.showMessageDialog(this, "Login Successful");
 
+        // Ask customer type at start
+        int choice = JOptionPane.showConfirmDialog(
+                this,
+                "Are you a New Customer?",
+                "Customer",
+                JOptionPane.YES_NO_OPTION);
+
+        if (choice == JOptionPane.YES_OPTION)
+            isNewCustomer = true;
+        else
+            isNewCustomer = false;
+
         customers.put(101, "Ayush");
         customers.put(102, "Rahul");
 
-        itemNames.put(1, "Laptop");
-        itemPrices.put(1, 50000.0);
+        itemname.put(1, "Laptop");
+        itemprice.put(1, 50000.0);
 
-        itemNames.put(2, "Mouse");
-        itemPrices.put(2, 500.0);
+        itemname.put(2, "Mouse");
+        itemprice.put(2, 500.0);
 
         setLayout(new GridLayout(4, 2));
 
         add(new JLabel("Customer ID"));
-        customerIdField = new JTextField();
-        add(customerIdField);
+        t1 = new JTextField();
+        add(t1);
 
         add(new JLabel("Item ID"));
-        itemIdField = new JTextField();
-        add(itemIdField);
+        t2 = new JTextField();
+        add(t2);
 
         add(new JLabel("Quantity"));
-        qtyField = new JTextField();
-        add(qtyField);
+        t3 = new JTextField();
+        add(t3);
 
         btn = new JButton("Purchase");
         btn.addActionListener(this);
@@ -56,36 +72,48 @@ public class ShoppingApp extends JFrame implements ActionListener {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
-        try {
-            int customerId = Integer.parseInt(customerIdField.getText());
-            int itemId = Integer.parseInt(itemIdField.getText());
-            int qty = Integer.parseInt(qtyField.getText());
 
-            if (!customers.containsKey(customerId)) {
-                int option = JOptionPane.showConfirmDialog(this,
-                        "New Customer. Add?");
-                if (option == JOptionPane.YES_OPTION) {
-                    String name = JOptionPane.showInputDialog("Enter Customer Name");
-                    customers.put(customerId, name);
-                } else {
+        try {
+
+            int customerid = Integer.parseInt(t1.getText());
+            int itemid = Integer.parseInt(t2.getText());
+            int qty = Integer.parseInt(t3.getText());
+
+            if (isNewCustomer) {
+
+                String name = JOptionPane.showInputDialog(
+                        "Enter Customer Name");
+
+                customers.put(customerid, name);
+
+            } else {
+
+                if (!customers.containsKey(customerid)) {
+                    JOptionPane.showMessageDialog(this,
+                            "Customer Not Found");
                     return;
                 }
             }
 
-            if (!itemNames.containsKey(itemId)) {
-                JOptionPane.showMessageDialog(this, "Invalid Item ID");
+            if (!itemname.containsKey(itemid)) {
+                JOptionPane.showMessageDialog(this,
+                        "Invalid Item ID");
                 return;
             }
 
-            String itemName = itemNames.get(itemId);
-            double total = itemPrices.get(itemId) * qty;
+            String itemName = itemname.get(itemid);
+            double total = itemprice.get(itemid) * qty;
 
             JOptionPane.showMessageDialog(this,
-                    "Item: " + itemName + "\nTotal Cost: Rs." + total);
+                    "Item : " + itemName +
+                    "\nTotal Cost : Rs. " + total);
 
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Invalid Input");
+
+            JOptionPane.showMessageDialog(this,
+                    "Invalid Input");
         }
     }
 
